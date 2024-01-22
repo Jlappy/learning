@@ -1,0 +1,34 @@
+
+import styled from "styled-components";
+
+export const LoginContainer = styled.div`
+
+.App {
+ font-family: 'Roboto', sans-serif;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 20px;
+}
+
+.App button {
+ margin: 10px;
+}
+
+.App img {
+ width: 30px;
+ height: 30px;
+}
+
+.App form {
+ width: 100%;
+ max-width: 500px;
+}
+
+.App .MuiList-root {
+ width: 100%;
+ max-width: 500px;
+}
+
+
+`

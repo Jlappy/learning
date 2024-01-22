@@ -1,0 +1,262 @@
+// import React from "react";
+import { Button, TextField, Checkbox, IconButton } from "@mui/material";
+import { CssTodoContainer } from "./style";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { ChangeEvent, useState } from "react";
+import { ITodo } from "./interface";
+import { Dialog } from "../../components";
+import { v4 as uuidv4 } from "uuid";
+
+export default function Todo() {
+  const [formData, setFormData] = useState<ITodo>({
+    id: uuidv4(),
+    todo: "",
+    isEdit: false,
+  });
+
+  const [todo, setTodo] = useState<ITodo[]>([
+    {
+      id: uuidv4(),
+      todo: "Wash dish",
+      isEdit: false,
+    },
+    {
+      id: uuidv4(),
+      todo: "Study",
+      isEdit: false,
+    },
+  ]);
+
+  const [updateModal, setUpdateModal] = useState<boolean>(false);
+
+  // const [deleteModal, setDeleteModal] = useState<boolean>(false);
+
+  /**
+   * ! handle change todo input
+   * @param
+   * @return void
+  //  */
+  const onChangeTodo = (
+    e: ChangeEvent<HTMLInputElement>,
+    isUpdate: boolean = false
+  ) => {
+    if (isUpdate) {
+      setFormData({
+        ...formData,
+        [e.target?.name]: e.target?.value,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        id: uuidv4(),
+        [e.target?.name]: e.target?.value,
+      });
+    }
+    // setFormData({
+    //   ...formData,
+    //   todo: e.target?.value,
+    // [e.target?.name]: e.target?.value,
+  };
+  /**
+   * ! Create a new todo
+   * @param
+   * @return void
+   */
+
+  const createTodo = () => {
+    setFormData({
+      id: uuidv4(),
+      todo: "",
+      isEdit: false,
+    });
+    setTodo([...todo, formData]);
+  };
+
+  /**
+   * ! Handle open update dialog
+   * @params
+   * @return void
+   */
+
+  const openUpdateDialog = (id: String) => {
+    const updatedItem = todo.find((item) => {
+      return item.id === id;
+    });
+    if (updatedItem) {
+      setFormData(updatedItem);
+    }
+    setUpdateModal(true);
+  };
+
+  /**
+   * ! handle update a todo
+   * @param
+   * @return void
+   **/
+
+  const updateTodo = () => {
+    const updateData = todo.map((item) => {
+      if (item.id === formData.id) {
+        return {
+          ...formData,
+          todo: formData.todo,
+        };
+      } else {
+        return item;
+      }
+    });
+    setTodo(updateData);
+    closeUpdateDialog();
+  };
+
+  /**
+   * !Handle close update dialog
+   * @params
+   * @return void
+   */
+  const closeUpdateDialog = () => {
+    setFormData({
+      id: uuidv4(),
+      todo: "",
+      isEdit: false,
+    });
+    setUpdateModal(false);
+  };
+
+  /**
+   * ! handle delete a todo
+   * @param
+   * @return void
+   * */
+
+
+=================
+
+  const openDeleteDialog = (id: String | number) => {
+    const deleteItem = todo.find((item) => {
+      return item.id === id;
+    });
+    if (deleteItem) {
+      setFormData(deleteItem);
+    }
+    setDeleteModal(true);
+  };
+  // ============
+  const closeDeleteDialog = () => {
+    setFormData({
+      id,
+      todo: "",
+      isEdit: false,
+    });
+    setDeleteModal(false);
+  };
+  // -------
+  const handDelete = () => {
+    const deleteTodo = todo.filter((item) => {
+      if (item.id !== formData.id) {
+        return {
+          ...formData,
+          todo: formData.todo,
+        };
+      }
+    });
+    setTodo(deleteTodo);
+    closeUpdateDialog();
+  };
+================
+
+
+
+
+  // const openDeleteDialog = (id: String) => {
+  //   const DeleteItem = todo.find((item) => {
+  //     return item.id === id;
+  //   });
+  //   if (DeleteItem) {
+  //     setFormData(DeleteItem);
+  //   }
+  //   setDeleteModal(true);
+  // };
+
+  // const closeDeleteDialog = () => {
+  //   setFormData({
+  //     id: uuidv4(),
+  //     todo: "",
+  //     isEdit: false,
+  //   });
+  //   setDeleteModal(false);
+  // };
+  return (
+    <CssTodoContainer>
+      <div className="todo-container">
+        <h1>Todo List</h1>
+        <div className="create-group">
+          <TextField
+            label="Todo"
+            id="outlined-basic"
+            value={formData.todo}
+            name="todo"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onChangeTodo(e, false)
+            }
+          />
+          <Button variant="contained" onClick={createTodo}>
+            Create
+          </Button>
+        </div>
+        <div className="todo-list">
+          {todo.map((item, index) => (
+            <div key={index} className="single-todo">
+              <div className="content">
+                <Checkbox />
+                <span>{index + 1}. </span>
+                <span>{item.todo}</span>
+              </div>
+              <div className="btn-todo">
+                <IconButton
+                  aria-label="update"
+                  size="large"
+                  onClick={() => openUpdateDialog(item.id)}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  aria-label="delete"
+                  size="large"
+                  // onClick={() => openDeleteDialog(item.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </div>
+            </div>
+          ))}
+        </div>
+        <Dialog
+          openDialog={updateModal}
+          title="Update"
+          submitBtn="Update"
+          onCancel={closeUpdateDialog}
+          onSubmit={updateTodo}
+        >
+          <TextField
+            label="todo"
+            value={formData.todo}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onChangeTodo(e, true)
+            }
+          ></TextField>
+        </Dialog>
+        {/* <Dialog
+          openDialog={deleteModal}
+          title="Delete"
+          submitBtn="Delete"
+          onCancel={closeDeleteDialog}
+          onSubmit={handDelete}
+        >
+          <label> Bạn có chắc chắn xóa </label>
+        </Dialog> */}
+      </div>
+    </CssTodoContainer>
+  );
+}

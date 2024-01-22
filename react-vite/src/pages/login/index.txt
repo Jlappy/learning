@@ -1,0 +1,83 @@
+// import React from "react";
+import { LoginContainer } from "./style";
+import {
+  TextField,
+  Button,
+  Link,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from "@mui/material";
+
+export default function index() {
+  return (
+    <LoginContainer>
+      <div>
+        <TextField
+          label="Travel"
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <Button>
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPwPpIHNWcFWWcTaBVTcTaBpL-PdvOzHtq8WBGtFHpWOaVvTaRuMtJNhRdEaRHGbMmWLWsUaWpPVdO-FNWmFdJ&usqp=CAU"
+                  alt="Q"
+                />
+              </Button>
+            ),
+          }}
+        />
+        <form noValidate autoComplete="off">
+          <TextField
+            label="Phone number, username, or email"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+          />
+          <TextField
+            label="Password"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+          />
+          <Button type="submit" variant="contained" color="primary">
+            Đăng nhập
+          </Button>
+          <Link href="#" variant="body2">
+            Quên mật khẩu?
+          </Link>
+        </form>
+        <Button variant="contained" color="primary">
+          Đăng ký
+        </Button>
+        <Button variant="contained" color="primary">
+          Tải ứng dụng
+        </Button>
+        <List>
+          <ListItem>
+            <ListItemText primary="Liked by" />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemText primary="kenzoere" />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemText primary="lil Japisla.." />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemText primary="eloears" />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemText primary="lofti232" />
+          </ListItem>
+        </List>
+      </div>
+    </LoginContainer>
+  );
+}
