@@ -1,4 +1,4 @@
-import "./assets/sass/App.scss";
+import "./assets/scss/App.scss";
 import { useRoutes } from "react-router-dom";
 import routes from "./router/routes";
 import { SetAuthContextProvider } from "./contexts";

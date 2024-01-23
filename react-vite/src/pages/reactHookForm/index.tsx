@@ -3,6 +3,8 @@ import { IForm, IFormClass } from "./interface";
 import { ReactHookFormContainer } from "./style";
 import { useRef } from "react";
 import { TextField } from "@mui/material";
+import { schema } from "./schema";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function ReactHookForm() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -17,7 +19,8 @@ export default function ReactHookForm() {
     reset,
     getValues,
     formState: { errors },
-  } = useForm<IForm>({
+  } = useForm<any>({
+    resolver: yupResolver(schema),
     defaultValues: nameDefaultValues,
   });
 
@@ -25,10 +28,6 @@ export default function ReactHookForm() {
     class: "",
     grade: "",
   };
-  const { register: classReg, handleSubmit: classHandleSubmit } =
-    useForm<IFormClass>({
-      defaultValues: classDefaultValue,
-    });
 
   const getForm = () => {
     console.log("getValues", getValues());
@@ -43,10 +42,6 @@ export default function ReactHookForm() {
     console.log(inputRef.current?.value);
   };
 
-  const submitClass: SubmitHandler<IFormClass> = (data) => {
-    console.log(data);
-  };
-
   return (
     <ReactHookFormContainer>
       <div className="introduce-rhf">
@@ -56,9 +51,14 @@ export default function ReactHookForm() {
           render={({ field }) => <TextField {...field} />}
         />
         {/* <input type="text" {...register("firstname")} /> */}
+        {errors.firstname && (
+          <small className="error">
+            {errors.firstname.message?.toString()}
+          </small>
+        )}
         <input type="text" {...register("lastname", { required: true })} />
         {errors.lastname && (
-          <small className="error">This field is required</small>
+          <small className="error">{errors.lastname.message?.toString()}</small>
         )}
         <button onClick={handleSubmit(submitName)} type="submit">
           Submit
@@ -69,12 +69,6 @@ export default function ReactHookForm() {
       <div className="uncontrolled-component">
         <input type="text" ref={inputRef} />
         <button onClick={getRef}>Get ref</button>
-      </div>
-
-      <div className="class-form">
-        <input type="text" {...classReg("class")} />
-        <input type="text" {...classReg("grade")} />
-        <button onClick={classHandleSubmit(submitClass)}>Class button</button>
       </div>
     </ReactHookFormContainer>
   );
