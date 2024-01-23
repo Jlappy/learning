@@ -1,0 +1,6 @@
+1. npm create vite@latest
+2. npm i axios
+3. npm i sass
+4. npm install react-router-dom
+5. npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
+6. 
